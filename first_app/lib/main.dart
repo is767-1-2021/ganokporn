@@ -12,13 +12,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // primarySwatch: Colors.blue,
         primaryColor: Colors.amber,
-        accentColor: Colors.red,
+        accentColor: Colors.yellow,
         textTheme: TextTheme(
           bodyText2: TextStyle(color: Colors.purple),
         ),
       ),
       // home: MyHomePage(title: 'Ganokporn and My POPCAt'),
-      initialRoute: '/first', 
+      initialRoute: '/6', 
       routes: <String, WidgetBuilder> {
         /* '/': (BuildContext context) {
           return Scaffold(
@@ -31,10 +31,12 @@ class MyApp extends StatelessWidget {
           );
         }, */
 
-        '/first': (context) => FirstPage(),
-        '/second': (context) => SecondPage(),
-        '/third': (context) => ThirdPage(),
-        '/fourth': (context) => FourthPage(),
+        '/1': (context) => FirstPage(),
+        '/2': (context) => SecondPage(),
+        '/3': (context) => ThirdPage(),
+        '/4': (context) => FourthPage(),
+        '/5': (context) => FifthPage(),
+        '/6': (context) => SixthPage(),
       }
     ); // MaterialApp
   }
@@ -324,6 +326,131 @@ class FourthPage extends StatelessWidget{
       },
       separatorBuilder: (context, index) => Divider(),
     ),
+    );
+  }
+}
+
+
+class FifthPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Grid View'),
+      ), // appBar
+      body: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(6, (index) {          
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/${index+1}');
+            /* ScaffoldMeessenger.of(context).showSnackBar(SnackBar(
+              context: Text('Tap at $index'),
+            )); // SnackBar */
+          },
+          child: Container(
+          margin: EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.circular(8.0),
+          ),
+        child: Center(
+          child: Text(
+            'Page ${index+1}',
+          style: Theme.of(context).textTheme.headline5,
+          ), // Text
+        ),
+          ),
+
+        ); // Center
+     }), // List.generate
+    ), // Grid View
+    ); // Scaffold
+    
+  }
+}
+
+class SixthPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context)  {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('First Form'),
+    ),
+    body: MyCustomForm(),
+    );
+  }
+}
+
+class MyCustomForm extends StatefulWidget{
+  @override
+  _MyCustomFormState createState() => _MyCustomFormState();
+}
+
+
+class _MyCustomFormState extends State<MyCustomForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column( // เพื่อวางเลย์เอาท์
+         //  mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Enter your firstname',
+                ),
+               validator: (value) {
+                 if (value==null || value.isEmpty) {
+                   return 'Please enter something.';
+              }
+              return null;
+            },
+          ), // TextFormField
+          
+          TextFormField(
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Enter your lastname',
+                ),
+               validator: (value) {
+                 if (value==null || value.isEmpty) {
+                   return 'Please enter lastname';
+              }
+              return null;
+            },
+          ),
+           TextFormField(
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Enter your age',
+                ),
+               validator: (value) {
+                 if (value==null || value.isEmpty) {
+                   return 'Please enter age';
+              }
+              if (int.parse(value) < 18 ) {
+                return 'Please enter valid age' ;
+              }
+              return null;
+            },
+          ),
+
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Hoorayyyyy'),
+                  ));
+              }
+            },
+            child: Text('Validate',)
+          ),
+        ],
+      ),
     );
   }
 }
