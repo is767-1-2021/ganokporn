@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'pages/first_page.dart';
+import 'pages/second_page.dart';
+import 'pages/third_page.dart';
+import 'pages/fourth_page.dart';
+import 'pages/fifth_page.dart';
+import 'pages/sixth_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -8,19 +15,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // primarySwatch: Colors.blue,
-        primaryColor: Colors.amber,
-        accentColor: Colors.yellow,
-        textTheme: TextTheme(
-          bodyText2: TextStyle(color: Colors.purple),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // primarySwatch: Colors.blue,
+          primaryColor: Colors.amber,
+          accentColor: Colors.yellow,
+          textTheme: TextTheme(
+            bodyText2: TextStyle(color: Colors.purple),
+          ),
         ),
-      ),
-      // home: MyHomePage(title: 'Ganokporn and My POPCAt'),
-      initialRoute: '/6', 
-      routes: <String, WidgetBuilder> {
-        /* '/': (BuildContext context) {
+        // home: MyHomePage(title: 'Ganokporn and My POPCAt'),
+        initialRoute: '/5',
+        routes: <String, WidgetBuilder>{
+          /* '/': (BuildContext context) {
           return Scaffold(
             appBar: AppBar(title: Text('Home Route')),
           ); // Scaffold
@@ -31,14 +38,13 @@ class MyApp extends StatelessWidget {
           );
         }, */
 
-        '/1': (context) => FirstPage(),
-        '/2': (context) => SecondPage(),
-        '/3': (context) => ThirdPage(),
-        '/4': (context) => FourthPage(),
-        '/5': (context) => FifthPage(),
-        '/6': (context) => SixthPage(),
-      }
-    ); // MaterialApp
+          '/1': (context) => FirstPage(),
+          '/2': (context) => SecondPage(),
+          '/3': (context) => ThirdPage(),
+          '/4': (context) => FourthPage(),
+          '/5': (context) => FifthPage(),
+          '/6': (context) => SixthPage(),
+        }); // MaterialApp
   }
 }
 
@@ -58,18 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
     width: 150,
   );
 
-   Image cat1 = Image.asset(
+  Image cat1 = Image.asset(
     'assets/popcat1.png',
     width: 150,
-  ); 
+  );
 
   Image cat2 = Image.asset(
     'assets/popcat2.png',
     width: 150,
-  ); 
+  );
 
   void _incrementCounter() {
-    setState(() { //refresh แล้วเก็บค่าไว้ต้องใช้ setstate ทุกครั้ง
+    setState(() {
+      //refresh แล้วเก็บค่าไว้ต้องใช้ setstate ทุกครั้ง
       cat = cat2;
       _counter++;
     });
@@ -80,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
       cat = cat1;
       _counter--;
     });
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, //กำหนดว่าข้อมูลเราจะอยู่ส่วนไหนของจอ เช่น center
+          mainAxisAlignment: MainAxisAlignment
+              .center, //กำหนดว่าข้อมูลเราจะอยู่ส่วนไหนของจอ เช่น center
           children: <Widget>[
             Container(
               height: 200.0,
-              margin: EdgeInsets.only(
-                left: 100.0,
-                right: 100.0,
-                bottom:20.0
-              ),
+              margin: EdgeInsets.only(left: 100.0, right: 100.0, bottom: 20.0),
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.25),
@@ -106,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               child: cat,
             ), //Container
-      
+
             Text(
               'You have pushed the button this many times:',
             ),
@@ -121,14 +125,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.green,
                   ),
-                  onPressed: _decreaseCounter, 
+                  onPressed: _decreaseCounter,
                   child: Text('Decrease'),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red,
                   ),
-                  onPressed: _incrementCounter, 
+                  onPressed: _incrementCounter,
                   child: Text('Increase'),
                 ),
               ],
@@ -140,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.fingerprint),
-      ), 
+      ),
     );
   }
 }
@@ -149,21 +153,18 @@ class SubmitButton extends StatelessWidget {
   final String buttonText;
   SubmitButton(this.buttonText);
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       child: Text(this.buttonText),
-      onPressed: (){
+      onPressed: () {
         print('Pressing');
       },
     );
   }
 }
 
-
-class FirstPage extends StatelessWidget{
+/* class FirstPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +180,7 @@ class FirstPage extends StatelessWidget{
       ), //Scaffold
     );
   }
-}
+} 
 
  class SecondPage extends StatelessWidget{
   @override
@@ -257,6 +258,8 @@ class FirstPage extends StatelessWidget{
     );
   }
 }
+
+
 
 
 class ThirdPage extends StatelessWidget{
@@ -338,13 +341,13 @@ class FifthPage extends StatelessWidget{
       appBar: AppBar(
         title: Text('Grid View'),
       ), // appBar
-      body: GridView.count(
+      body: GridView.count( // กำหนดความกว้างของแกนแนวนอน
         crossAxisCount: 2,
-        children: List.generate(6, (index) {          
-        return InkWell(
+        children: List.generate(6, (index) {      // Class List identify item    
+        return InkWell( 
           onTap: () {
             Navigator.pushNamed(context, '/${index+1}');
-            /* ScaffoldMeessenger.of(context).showSnackBar(SnackBar(
+            /* ScaffoldMeessenger.of(context).showSnackBar(SnackBar( // when i press
               context: Text('Tap at $index'),
             )); // SnackBar */
           },
@@ -357,7 +360,7 @@ class FifthPage extends StatelessWidget{
         child: Center(
           child: Text(
             'Page ${index+1}',
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headline5, //
           ), // Text
         ),
           ),
@@ -369,6 +372,7 @@ class FifthPage extends StatelessWidget{
     
   }
 }
+
 
 class SixthPage extends StatelessWidget {
   @override
@@ -454,3 +458,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     );
   }
 }
+
+*/
+

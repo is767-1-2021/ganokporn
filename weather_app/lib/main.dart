@@ -9,7 +9,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Don't allow landscape mode
   SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]) //ตะแคงจอแล้วไม่เปลี่ยนตาม
       .then((_) => runApp(MyApp(settings: settings)));
 }
 
