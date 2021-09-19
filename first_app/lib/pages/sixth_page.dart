@@ -90,9 +90,13 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 _formKey.currentState!
                     .save(); // Save ต้องมาหลัง Validate เพื่อเช็คว่ามันถูกต้องตามที่เราต้องการ แล้วเอาค่าไปใส่ในตัวแปรที่เราเก็บไว้
 
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                var response = 'Hoorayyy = $_fisrtName $_lastName $_age';
+                Navigator.pop(context, response);
+                // Pop กลับไปที่หน้า 1 เอาค่ากลับไปด้วย
+
+                /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Hoorayyyyy = $_fisrtName $_lastName $_age'),
-                )); // SnackBar
+                )); // SnackBar */
 
               }
             },
