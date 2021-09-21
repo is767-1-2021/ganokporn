@@ -1,4 +1,6 @@
+import 'package:first_app/models/first_form_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SixthPage extends StatelessWidget {
   @override
@@ -19,7 +21,7 @@ class MyCustomForm extends StatefulWidget {
 
 class _MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _fisrtName;
+  String? _firstName;
   String? _lastName;
   int? _age;
 
@@ -28,8 +30,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Form(
       key: _formKey,
       child: Column(
-        // เพื่อวางเลย์เอาท์
-        //  mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextFormField(
             decoration: InputDecoration(
@@ -39,15 +39,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter something.';
+                return 'Please enter firstname.';
               }
+
               return null;
             },
             onSaved: (value) {
-              _fisrtName = value;
+              _firstName = value;
             },
-          ), // TextFormField
-
+            initialValue: context.read<FirstFormModel>().firstName,
+          ),
           TextFormField(
             decoration: InputDecoration(
               border: UnderlineInputBorder(),
@@ -56,13 +57,15 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter lastname';
+                return 'Please enter lastname.';
               }
+
               return null;
             },
             onSaved: (value) {
               _lastName = value;
             },
+            initialValue: context.read<FirstFormModel>().lastName,
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -72,32 +75,30 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter age';
+                return 'Please enter age.';
               }
+
               if (int.parse(value) < 18) {
-                return 'Please enter valid age';
+                return 'Please enter valid age.';
               }
+
               return null;
             },
             onSaved: (value) {
               _age = int.parse(value!);
             },
+            initialValue: context.read<FirstFormModel>().age.toString(),
           ),
-
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                _formKey.currentState!
-                    .save(); // Save ต้องมาหลัง Validate เพื่อเช็คว่ามันถูกต้องตามที่เราต้องการ แล้วเอาค่าไปใส่ในตัวแปรที่เราเก็บไว้
+                _formKey.currentState!.save();
 
-                var response = 'Hoorayyy = $_fisrtName $_lastName $_age';
-                Navigator.pop(context, response);
-                // Pop กลับไปที่หน้า 1 เอาค่ากลับไปด้วย
+                context.read<FirstFormModel>().firstName = _firstName;
+                context.read<FirstFormModel>().lastName = _lastName;
+                context.read<FirstFormModel>().age = _age;
 
-                /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Hoorayyyyy = $_fisrtName $_lastName $_age'),
-                )); // SnackBar */
-
+                Navigator.pop(context);
               }
             },
             child: Text('Validate'),
