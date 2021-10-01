@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: MyHomePage(title: 'Ganokporn and My POPCAt'),
-        initialRoute: '/5',
+        initialRoute: '/1',
         routes: <String, WidgetBuilder>{
           /* '/': (BuildContext context) {
           return Scaffold(
@@ -123,8 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: cat,
-            ), //Container
-
+            ),
             Text(
               'You have pushed the button this many times:',
             ),

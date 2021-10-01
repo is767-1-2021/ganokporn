@@ -5,8 +5,6 @@ class FirstFormModel extends ChangeNotifier {
   String? _lastName;
   int? age;
 
-  // ลากคลุมตัวแปร 3 ตัว คลิดขวา Generate getter setter + เพิ่ม notifyListeners ด้วย
-
   get firstName => this._firstName;
 
   set firstName(value) {
