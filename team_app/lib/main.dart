@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:team_app/models/patient_form_model.dart';
+import 'package:team_app/pages/hospitel_update_page.dart';
 import 'pages/patient_list_page.dart';
 import 'pages/patient_status_page.dart';
 import 'pages/hostpitel_info_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Team App',
       theme: ThemeData(fontFamily: 'Raleway'),
+
       /*theme: ThemeData(
         primarySwatch: Colors.blue,
       

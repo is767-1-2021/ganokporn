@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:team_app/pages/hospitel_detail_page.dart';
+import 'package:team_app/pages/hospitel_update_page.dart';
 import 'package:team_app/pages/hostpitel_info_page.dart';
 // import 'package:table_calendar/table_calendar.dart';
 import 'package:team_app/pages/patient_status_page.dart';
@@ -19,7 +20,7 @@ class _PatientListPageState extends State<PatientListPage> {
         title: Text('Patient Today'),
         // centerTitle: true,
         actions: [
-          IconButton(
+          /* IconButton(
               onPressed: () {
                 showDatePicker(
                     context: context,
@@ -28,6 +29,7 @@ class _PatientListPageState extends State<PatientListPage> {
                     lastDate: DateTime(2050));
               },
               icon: Icon(Icons.calendar_today)),
+              */
           IconButton(
               onPressed: () {
                 Navigator.push(
@@ -39,6 +41,17 @@ class _PatientListPageState extends State<PatientListPage> {
               },
               icon: Icon(Icons.shopping_cart_rounded)),
           IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HospitelUpdate(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.settings)),
+          IconButton(
+              // ปุ่ม Logout
               onPressed: () {
                 /* Navigator.push(
                   context,
@@ -91,6 +104,11 @@ class _PatientSearchState extends State<PatientSearch> {
     {"id": 19, "name": "Rinlada", "age": 68},
     {"id": 20, "name": "Patcharin", "age": 21},
   ];
+
+  /* getItemAndNavigate(String item, BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => StatusForm(itemHolder: item)));
+  }*/
 
   List<Map<String, dynamic>> _foundPatient = [];
 
@@ -169,6 +187,11 @@ class _PatientSearchState extends State<PatientSearch> {
                               style:
                                   TextStyle(fontSize: 15, color: Colors.grey),
                             ),
+                            /* onTap: () => {
+                              getItemAndNavigate(
+                                  _foundPatient.toString(), context)
+                            },*/
+
                             onTap: () {
                               Navigator.push(
                                 context,

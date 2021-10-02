@@ -7,6 +7,10 @@ class PatientFormModel extends ChangeNotifier {
   String? _pid;
   String? _checkin;
   String? _checkout;
+  String? _hName;
+  String? _hAddress;
+  String? _hTel;
+  String? _hBed;
 
   get firstName => this._firstName;
 
@@ -47,6 +51,34 @@ class PatientFormModel extends ChangeNotifier {
 
   set pid(value) {
     this._pid = value;
+    notifyListeners();
+  }
+
+  get hName => this._hName;
+
+  set hName(value) {
+    this._hName = value;
+    notifyListeners();
+  }
+
+  get hAddress => this._hAddress;
+
+  set hAddress(value) {
+    this._hAddress = value;
+    notifyListeners();
+  }
+
+  get hTel => this._hTel;
+
+  set hTel(value) {
+    this._hTel = value;
+    notifyListeners();
+  }
+
+  get hBed => this._hBed;
+
+  set hBed(value) {
+    this._hBed = value;
     notifyListeners();
   }
 }

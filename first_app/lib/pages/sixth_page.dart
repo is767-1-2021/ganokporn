@@ -59,7 +59,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
               if (value == null || value.isEmpty) {
                 return 'Please enter lastname.';
               }
-
               return null;
             },
             onSaved: (value) {

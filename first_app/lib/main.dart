@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: MyHomePage(title: 'Ganokporn and My POPCAt'),
-        initialRoute: '/1',
+        initialRoute: '/4',
         routes: <String, WidgetBuilder>{
           /* '/': (BuildContext context) {
           return Scaffold(
