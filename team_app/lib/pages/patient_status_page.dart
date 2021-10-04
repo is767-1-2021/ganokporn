@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:team_app/pages/hostpitel_info_page.dart';
 
 class StatusForm extends StatelessWidget {
+  final String itemHolder;
+
+  const StatusForm({Key? key, required this.itemHolder}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +36,20 @@ class StatusForm extends StatelessWidget {
             image: DecorationImage(
                 image: AssetImage("assets/form-bg1.jpg"), fit: BoxFit.cover),
           ),
-          child: StatusFormm()),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '${itemHolder} Detail',
+                  style: TextStyle(
+                    color: Colors.teal.shade700,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                StatusFormm()
+              ])),
     );
   }
 }
@@ -65,7 +82,7 @@ class _StatusFormState extends State<StatusFormm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 20),
+            /*SizedBox(height: 20),
             Text(
               'Patient Detail',
               style: TextStyle(
@@ -73,7 +90,7 @@ class _StatusFormState extends State<StatusFormm> {
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
-            ),
+            ),*/
             SizedBox(height: 10),
             Container(
               height: 310,
@@ -98,12 +115,12 @@ class _StatusFormState extends State<StatusFormm> {
                   TextFormField(
                     decoration: InputDecoration(
                       border: UnderlineInputBorder(),
-                      labelText: 'Enter firstname',
+                      labelText: 'Enter Full Name',
                       icon: Icon(Icons.account_box_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter FirstName.';
+                        return 'Please enter Full Name';
                       }
                       return null;
                     },
@@ -112,7 +129,7 @@ class _StatusFormState extends State<StatusFormm> {
                     },
                     initialValue: context.read<PatientFormModel>().firstName,
                   ),
-                  TextFormField(
+                  /* TextFormField(
                     decoration: InputDecoration(
                       border: UnderlineInputBorder(),
                       labelText: 'Enter lastname',
@@ -128,7 +145,7 @@ class _StatusFormState extends State<StatusFormm> {
                       _lastName = value;
                     },
                     initialValue: context.read<PatientFormModel>().lastName,
-                  ),
+                  ),*/
                   TextFormField(
                     decoration: InputDecoration(
                       border: UnderlineInputBorder(),

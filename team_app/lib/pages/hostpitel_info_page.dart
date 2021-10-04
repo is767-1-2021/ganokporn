@@ -91,7 +91,7 @@ class _HospitelInfoPageState extends State<HospitelInfoPage> {
                           child: Consumer<PatientFormModel>(
                             builder: (context, form, child) {
                               return Text(
-                                '${form.firstName} ${form.lastName}\n ID: ${form.pid}\n Check-in: ${form.checkin}\n Check-out: ${form.checkout}',
+                                '${form.firstName}\n ID: ${form.pid}\n Check-in: ${form.checkin}\n Check-out: ${form.checkout}',
                                 style: TextStyle(
                                     color: Colors.lightBlue,
                                     fontWeight: FontWeight.normal,

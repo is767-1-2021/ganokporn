@@ -105,10 +105,10 @@ class _PatientSearchState extends State<PatientSearch> {
     {"id": 20, "name": "Patcharin", "age": 21},
   ];
 
-  /* getItemAndNavigate(String item, BuildContext context) {
+  getItemAndNavigate(String item, BuildContext context) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => StatusForm(itemHolder: item)));
-  }*/
+  }
 
   List<Map<String, dynamic>> _foundPatient = [];
 
@@ -120,6 +120,7 @@ class _PatientSearchState extends State<PatientSearch> {
 
   void _runFilter(String enteredKeyword) {
     List<Map<String, dynamic>> results = [];
+
     if (enteredKeyword.isEmpty) {
       results = _allPatient;
     } else {
@@ -187,19 +188,21 @@ class _PatientSearchState extends State<PatientSearch> {
                               style:
                                   TextStyle(fontSize: 15, color: Colors.grey),
                             ),
-                            /* onTap: () => {
+                            onTap: () => {
                               getItemAndNavigate(
-                                  _foundPatient.toString(), context)
-                            },*/
+                                  //_foundPatient.toString(), context)
+                                  _foundPatient[index]['name'],
+                                  context)
+                            },
 
-                            onTap: () {
+                            /* onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => StatusForm(),
                                 ),
                               );
-                            },
+                            },*/
                           ),
                         ),
                       )
