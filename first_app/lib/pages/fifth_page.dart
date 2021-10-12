@@ -10,7 +10,7 @@ class FifthPage extends StatelessWidget {
       body: GridView.count(
         // กำหนดความกว้างของแกนแนวนอน
         crossAxisCount: 2,
-        children: List.generate(7, (index) {
+        children: List.generate(8, (index) {
           // Class List identify item
           return InkWell(
             onTap: () {
