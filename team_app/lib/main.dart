@@ -7,12 +7,25 @@ import 'pages/hostpitel_info_page.dart';
 import 'package:provider/provider.dart';
 import 'pages/hospitel_detail_page.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:team_app/models/patient_model.dart';
+import 'package:team_app/models/patient_list_model.dart';
+import 'package:team_app/services/patient_service.dart';
+import 'package:team_app/controllers/patient_controller.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  var services = FirebaseServices();
+  var controller = PatientController(services);
+
+  // runApp(TeamApp(controller: controller));
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => PatientFormModel(),
+          create: (context) => PatientsListModel(),
         ),
       ],
       child: MyApp(),
@@ -20,6 +33,20 @@ void main() {
   );
 }
 
+/*class TeamApp extends StatelessWidget {
+  final PatientController controller;
+  TeamApp({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: PatientList(
+        controller: controller,
+      ),
+    );
+  }
+}
+*/
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -34,7 +61,7 @@ class MyApp extends StatelessWidget {
       ),
       */
 
-      home: PatientListPage(),
+      home: PatientList(),
     );
   }
 }

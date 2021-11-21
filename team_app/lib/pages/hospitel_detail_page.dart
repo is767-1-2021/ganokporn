@@ -130,7 +130,7 @@ class HospitelDetailPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PatientListPage(),
+                                builder: (context) => PatientList(),
                               ),
                             );
                           },

@@ -148,7 +148,7 @@ class _HospitelInfoPageState extends State<HospitelInfoPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PatientListPage(),
+                                  builder: (context) => PatientList(),
                                 ),
                               );
                             },

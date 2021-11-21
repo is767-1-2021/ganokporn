@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:team_app/pages/hospitel_detail_page.dart';
 import 'package:team_app/pages/hospitel_update_page.dart';
 import 'package:team_app/pages/hostpitel_info_page.dart';
-// import 'package:table_calendar/table_calendar.dart';
 import 'package:team_app/pages/patient_status_page.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:team_app/models/patient_model.dart';
+import 'package:team_app/models/patient_list_model.dart';
+import 'package:team_app/services/patient_service.dart';
+import 'package:team_app/controllers/patient_controller.dart';
 
-class PatientListPage extends StatefulWidget {
+/* class PatientListPage extends StatefulWidget {
   @override
   _PatientListPageState createState() => _PatientListPageState();
 }
@@ -20,16 +25,7 @@ class _PatientListPageState extends State<PatientListPage> {
         title: Text('Patient Today'),
         // centerTitle: true,
         actions: [
-          /* IconButton(
-              onPressed: () {
-                showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1990),
-                    lastDate: DateTime(2050));
-              },
-              icon: Icon(Icons.calendar_today)),
-              */
+          
           IconButton(
               onPressed: () {
                 Navigator.push(
@@ -53,12 +49,7 @@ class _PatientListPageState extends State<PatientListPage> {
           IconButton(
               // ปุ่ม Logout
               onPressed: () {
-                /* Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ...(),
-                  ),
-                );*/
+                
               },
               icon: Icon(Icons.settings_power)),
         ],
@@ -71,7 +62,8 @@ class _PatientListPageState extends State<PatientListPage> {
           )),
         ),
       ),
-      body: PatientSearch(),
+      //body: PatientSearch(),
+      body: PatientList(),
     );
   }
 }
@@ -213,6 +205,281 @@ class _PatientSearchState extends State<PatientSearch> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+*/
+
+class PatientList extends StatefulWidget {
+  var service = FirebaseServices();
+  var controller;
+  PatientList() {
+    controller = PatientController(service);
+  }
+
+  @override
+  _PatientListState createState() => _PatientListState();
+}
+
+class _PatientListState extends State<PatientList> {
+  List<Patient> _patientList = [];
+  bool isLoading = false;
+  String id_hospitel_test = "1234567";
+
+  @override
+  void initState() {
+    super.initState();
+    // setState(() {});
+    widget.controller.onSync
+        .listen((bool syncState) => setState(() => isLoading = syncState));
+    //_getPatients();
+  }
+
+  void _getPatients(BuildContext context) async {
+    var patientsList = await widget.controller.fecthpatients();
+    setState(() {
+      //patients = patientsList;
+      context.read<PatientsListModel>().patientList = patientsList;
+    });
+  }
+
+  Widget get body => isLoading
+      ? CircularProgressIndicator()
+      : ListView.builder(
+          itemCount: _patientList.isEmpty ? 1 : _patientList.length,
+          itemBuilder: (context, index) {
+            if (_patientList.isEmpty) {
+              return Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 300),
+                  child: Text('ไม่พบการจองห้องพัก'),
+                ),
+              );
+            }
+            return Card(
+              child: ListTile(
+                title: Text('${_patientList[index].hospitel}'),
+                subtitle:
+                    Text(' วันที่ตรวจหาเชื้อ ${_patientList[index].checkdate}'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PatientDetail(items: _patientList[index]),
+                    ),
+                  );
+                },
+              ),
+            );
+          });
+
+  @override
+  Widget build(BuildContext context) {
+    _getPatients(context);
+    //List<PatientsItem> _patientsList = [];
+    if (context.read<PatientsListModel>().patientList != null) {
+      _patientList = context.read<PatientsListModel>().patientList;
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'รายการจองห้องพัก',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            //color: iWhiteColor
+          ),
+        ),
+        backgroundColor: Color(0xFF473F97),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            iconSize: 28.0,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Center(
+        child: body,
+      ),
+    );
+  }
+}
+
+/*class PatientsItem {
+  final String checkdate;
+  final String fullname;
+  final String hospitel;
+  final String startdateadmit;
+  final String enddateadmit;
+
+  const PatientsItem({
+    Key? key,
+    required this.checkdate,
+    required this.fullname,
+    required this.hospitel,
+    required this.startdateadmit,
+    required this.enddateadmit,
+  });
+  add(Map<String, String> map) {}
+}
+*/
+
+class PatientDetail extends StatelessWidget {
+  final Patient items;
+  const PatientDetail({Key? key, required this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      /* appBar: AppBar(
+        backgroundColor: Color(0xFF26A69A),
+        title: Text('Patient Today'),
+        // centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HospitelDetailPage(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.shopping_cart_rounded)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HospitelUpdate(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.settings)),
+          IconButton(
+              // ปุ่ม Logout
+              onPressed: () {},
+              icon: Icon(Icons.settings_power)),
+        ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            colors: [Colors.teal.shade600, Colors.amberAccent],
+            begin: Alignment.bottomLeft,
+            end: Alignment.bottomRight,
+          )),
+        ),
+      ),
+      */
+
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            'รายละเอียดการจอง',
+            style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w700,
+              //color: iWhiteColor,
+            ),
+          ),
+        ),
+        backgroundColor: Color(0xFF473F97),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            iconSize: 28.0,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                enabled: false,
+                labelText: 'ชื่อสกุลผู้เข้าพัก',
+                labelStyle: TextStyle(
+                    // color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    //borderSide: BorderSide(color: iBlueColor),
+
+                    ),
+              ),
+              initialValue: '${items.fullname}',
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                enabled: false,
+                labelText: 'ชื่อโรงพยาบาลสนาม',
+                labelStyle: TextStyle(
+                    // color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    //borderSide: BorderSide(color: iBlueColor),
+
+                    ),
+              ),
+              initialValue: '${items.hospitel}',
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                enabled: false,
+                labelText: 'วันที่เข้ารับการตรวจ',
+                labelStyle: TextStyle(
+                    // color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    //borderSide: BorderSide(color: iBlueColor),
+
+                    ),
+              ),
+              initialValue: '${items.checkdate}',
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                enabled: false,
+                labelText: 'วันที่เข้าห้องพัก',
+                labelStyle: TextStyle(
+                    // color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    //borderSide: BorderSide(color: iBlueColor),
+
+                    ),
+              ),
+              initialValue: '${items.startdateadmit}',
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                enabled: false,
+                labelText: 'วันที่ออกจากห้องพัก',
+                labelStyle: TextStyle(
+                    // color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    //borderSide: BorderSide(color: iBlueColor),
+
+                    ),
+              ),
+              initialValue: '${items.enddateadmit}',
+            ),
+          ],
         ),
       ),
     );
