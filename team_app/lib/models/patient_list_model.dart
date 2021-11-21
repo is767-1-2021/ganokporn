@@ -82,7 +82,7 @@ class PatientsListModel extends ChangeNotifier {
 
   UnmodifiableListView<Patient> get items => UnmodifiableListView(_item);
 
-  List<Patient> getBookingList() {
+  List<Patient> getPatientList() {
     return _item;
   }
 

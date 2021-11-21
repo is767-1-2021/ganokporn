@@ -30,6 +30,7 @@ class FirebaseServices extends PatientsServices {
       'hospitel': items.hospitel,
       'startdateadmit': items.startdateadmit,
       'enddateadmit': items.enddateadmit,
+      'idHospitel': items.idHospitel,
     });
   }
 }
