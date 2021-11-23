@@ -2,9 +2,186 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:team_app/models/patient_form_model.dart';
 import 'package:provider/provider.dart';
+import 'package:team_app/models/patient_list_model.dart';
 import 'package:team_app/pages/hostpitel_info_page.dart';
+import 'package:team_app/pages/patient_list_page.dart';
+import 'package:team_app/services/patient_service.dart';
+import 'package:team_app/controllers/patient_controller.dart';
+import 'package:team_app/models/patient_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class StatusForm extends StatelessWidget {
+  const StatusForm({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'อัพเดทข้อมูลผู้เข้าพัก',
+          style: TextStyle(
+            fontSize: 20, fontWeight: FontWeight.w700,
+            // color: iWhiteColor
+            // ),
+          ),
+        ),
+        //backgroundColor: iBlueColor,
+      ),
+      body: StatusFormUpdate,
+    );
+  }
+}
+
+class StatusFormUpdate extends StatefulWidget {
+  const StatusFormUpdate({Key? key}) : super(key: key);
+  @override
+  _StatusFormUpdateState createState() => _StatusFormUpdateState();
+}
+
+class _StatusFormUpdateState extends State<StatusFormUpdate> {
+  final _formkey = GlobalKey<FormState>();
+  String? _start_date;
+  String? _end_date;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formkey,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'วันที่เข้าห้องพัก',
+                  labelStyle: TextStyle(
+                    //color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 23,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                      //borderSide: BorderSide(color: iBlueColor),
+                      ),
+                  focusedBorder: UnderlineInputBorder(
+                      //borderSide: BorderSide(color: iBlueColor),
+                      ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'โปรดระบุวันที่เข้าห้องพัก';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _start_date = value;
+                },
+                initialValue: (context.read<PatientModel>().start_date),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'วันที่ออกจากห้องพัก',
+                  labelStyle: TextStyle(
+                    //color: iBlackColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 23,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                      //borderSide: BorderSide(color: iBlueColor),
+                      ),
+                  focusedBorder: UnderlineInputBorder(
+                      //borderSide: BorderSide(color: iBlueColor),
+                      ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'โปรดระบุวันที่ออกจากห้องพัก';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _end_date = value;
+                },
+                initialValue: (context.read<PatientModel>().end_date),
+              ),
+              SizedBox(width: 20, height: 50),
+              Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  child: Text('อัพเดทข้อมูล'),
+                  style: ElevatedButton.styleFrom(
+                      //primary: iBlueColor,
+                      ),
+                  onPressed: () {
+                    if (_formkey.currentState!.validate()) {
+                      _formkey.currentState!.save();
+
+                      List<PatientUpdate> patientlistupdate = [];
+
+                      context.read<PatientsListModel>().start_date = 's';
+                      context.read<PatientsListModel>().end_date = 's';
+                      if (context.read<PatientsListModel>().start_date != null) {
+                        patientlistupdate =
+                            context.read<PatientsListModel>().end_date;
+                        print('///');
+                      }
+                      // Add,Update state
+                      patientlistupdate.add(Patient(
+                        start_date:'';
+                        end_date: '';
+
+                      ));
+                      void service = FirebaseServices();
+                      Patient controller = PatientUpadateController(service);
+                      controller.addPatientUpadateItem(new Patient(
+                        start_date:'';
+                        end_date: '';
+                      ));
+
+
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('รับบทนางบันทึก !'),
+        content: Text(
+            'ระบบทำการบันทึกข้อมูลอัพเดทวันเข้า-ออกของผู้เข้าพักเรียบร้อยแล้ว'),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PatientList()));
+              },
+              child: Text('แฮปปี้'))
+        ],
+      );
+    },
+  );
+}
+
+
+// ----------------------------------โค้ดก่อนสอบมิดเทอม----------------------------------------------------------
+
+/* class StatusForm extends StatelessWidget {
   final String itemHolder;
 
   const StatusForm({Key? key, required this.itemHolder}) : super(key: key);
@@ -346,3 +523,4 @@ class naxtCard extends StatelessWidget {
     );
   }
 }
+*/

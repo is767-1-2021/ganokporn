@@ -6,25 +6,32 @@ class PatientController {
   final PatientsServices services;
   List<Patient> patients = List.empty();
 
-  StreamController<bool> onSyncController = StreamController<bool>.broadcast();
+  StreamController<bool> onSyncController = StreamController();
   Stream<bool> get onSync => onSyncController.stream;
   bool _isDisposed = false;
 
   PatientController(this.services);
 
-  Future<List<Patient>?> fecthPatients(String idHospitel) async {
+  Future<List<Patient>> fecthpatients() async {
     if (_isDisposed) {
       onSyncController = StreamController<bool>.broadcast();
     }
-    onSyncController.sink.add(true);
-    patients = await services.getPatients(idHospitel);
-    onSyncController.sink.add(false);
+    onSyncController.add(true);
+    //patients = await services.getPatients(idHospitel);
+    patients = await services.getPatients();
+    onSyncController.add(false);
     dispose();
     return patients;
   }
 
-  void addPatients(Patient items) async {
-    services.addPatients(items);
+  void addPatientUpadateItem(Patient items) async {
+    services.addPatientUpadateItem(items);
+  }
+
+  void updateEndDateAdmit(int _idcard, String _checkindate,
+      String _startdateadmit, String _endadmitdate) {
+    services.updateEndDateAdmit(
+        _idcard, _checkindate, _startdateadmit, _endadmitdate);
   }
 
   void dispose() {

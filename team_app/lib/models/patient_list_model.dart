@@ -10,7 +10,8 @@ class PatientsListModel extends ChangeNotifier {
   String? _check_date;
   String? _hospitel;
   String? _start_date;
-  String? _end_date_;
+  String? _end_date;
+
   List<Patient>? _patientList;
 
   String? get full_name => this._full_name;
@@ -43,10 +44,10 @@ class PatientsListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get end_date => this._end_date_;
+  get end_date => this._end_date;
 
   set end_date_(value) {
-    this._end_date_ = value;
+    this._end_date = value;
     notifyListeners();
   }
 

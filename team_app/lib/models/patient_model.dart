@@ -3,26 +3,63 @@ import 'package:flutter/material.dart';
 
 // Class
 class Patient {
-  String idHospitel;
-  String checkdate;
-  String fullname;
-  String hospitel;
-  String startdateadmit;
-  String enddateadmit;
+//   String idHospitel;
+//   String checkdate;
+//   String fullname;
+//   String hospitel;
+//   String startdateadmit;
+//   String enddateadmit;
 
-  Patient(this.idHospitel, this.checkdate, this.fullname, this.hospitel,
-      this.startdateadmit, this.enddateadmit);
+//   Patient(this.idHospitel, this.checkdate, this.fullname, this.hospitel,
+//       this.startdateadmit, this.enddateadmit);
 
+//   factory Patient.fromDs(
+//     Map<String, Object?> json,
+//   ) {
+//     return Patient(
+//       json['idHospitel'] as String,
+//       json['checkdate'] as String,
+//       json['fullname'] as String,
+//       json['hospitel'] as String,
+//       json['startdateadmit'] as String,
+//       json['enddateadmit'] as String,
+//     );
+//   }
+// }
+
+  final int idcard;
+  final String fullname;
+  final String phone;
+  final String hospital;
+  final String checkindate;
+  final String hospitel;
+  final String startdateadmit;
+  final String enddateadmit;
+  final String status;
+
+  Patient(
+      this.idcard,
+      this.fullname,
+      this.phone,
+      this.hospital,
+      this.checkindate,
+      this.hospitel,
+      this.startdateadmit,
+      this.enddateadmit,
+      this.status);
   factory Patient.fromDs(
     Map<String, Object?> json,
   ) {
     return Patient(
-      json['idHospitel'] as String,
-      json['checkdate'] as String,
+      json['idcard'] as int,
       json['fullname'] as String,
+      json['phone'] as String,
+      json['hospital'] as String,
+      json['checkindate'] as String,
       json['hospitel'] as String,
       json['startdateadmit'] as String,
       json['enddateadmit'] as String,
+      json['status'] as String,
     );
   }
 }
@@ -46,7 +83,7 @@ class PatientModel extends ChangeNotifier {
   String? _hospitel_name;
   String? _check_date;
   String? _start_date;
-  String? _end_date_;
+  String? _end_date;
 
   int? get id_card => this._id_card;
 
@@ -83,10 +120,10 @@ class PatientModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get end_date_ => this._end_date_;
+  get end_date => this._end_date;
 
-  set end_date_(value) {
-    this._end_date_ = value;
+  set end_date(value) {
+    this._end_date = value;
     notifyListeners();
   }
 
