@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:team_app/models/patient_form_model.dart';
@@ -55,31 +57,55 @@ class _PatientUpdateFormState extends State<PatientUpdateForm> {
       _patientList = context.read<PatientsListModel>().patientList;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'อัพเดท',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            //color: iWhiteColor),
+        appBar: AppBar(
+          title: Text(
+            'อัพเดท',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              //color: iWhiteColor),
+            ),
           ),
+          backgroundColor: Color(0xFF473F97),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              iconSize: 28.0,
+              onPressed: () {},
+            ),
+          ],
         ),
-      backgroundColor: Color(0xFF473F97),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            iconSize: 28.0,
-            onPressed: () {},
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextFormField(
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'วันที่ออกจากห้องพัก',
+                    labelStyle: TextStyle(
+                      //color: iBlackColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 23,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+                        ),
+                    focusedBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+                        ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'โปรดระบุวันที่ออกจากห้องพัก';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _end_date = value;
+                  }),
+            ],
           ),
-        ],
-      ),
-      body: Center(
-        child: body,
-      )
-    );
+        ));
   }
 }
-
-
-
-หน้านี้กำลังจะลอกใหม่ 
