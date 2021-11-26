@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:team_app/models/hospital_model.dart';
+import 'package:team_app/pages/hospitel_info_screen.dart';
+import 'package:provider/provider.dart';
 
 class Hospital {
   int? hospitalId;

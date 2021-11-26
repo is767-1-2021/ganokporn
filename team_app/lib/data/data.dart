@@ -1,4 +1,4 @@
-import 'package:team_app/models/hospital_cla.dart';
+import 'package:team_app/models/hospital_clas.dart';
 
 final prevention = [
   {'assets/images/distance.png': 'เว้น\nระยะห่าง'},

@@ -24,14 +24,19 @@ class PatientController {
     return patients;
   }
 
-  void addPatientUpadateItem(Patient items) async {
+  /*void addPatientUpadateItem(Patient items) async {
     services.addPatientUpadateItem(items);
-  }
+  }*/
 
-  void updateEndDateAdmit(int _idcard, String _checkindate,
+  /*void updateEndDateAdmit(int _idcard, String _checkindate,
       String _startdateadmit, String _endadmitdate) {
     services.updateEndDateAdmit(
         _idcard, _checkindate, _startdateadmit, _endadmitdate);
+  }*/
+
+  Future<void> updateAdmit(
+      int idcard, String checkindate, String enddateadmit) async {
+    await services.updateAdmit(idcard, checkindate, enddateadmit);
   }
 
   void dispose() {

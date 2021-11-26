@@ -6,6 +6,7 @@ import 'package:team_app/pages/patient_list_page.dart';
 // Provider
 
 class PatientsListModel extends ChangeNotifier {
+  int? idCard;
   String? _full_name;
   String? _check_date;
   String? _hospitel;
@@ -17,6 +18,13 @@ class PatientsListModel extends ChangeNotifier {
   String? get full_name => this._full_name;
 
   //List<PatientsItem>? _patientsList;
+
+  get id_Card => this.idCard;
+
+  set id_Card(idCard) {
+    this.idCard = idCard;
+    notifyListeners();
+  }
 
   set full_name(String? value) {
     this._full_name = value;

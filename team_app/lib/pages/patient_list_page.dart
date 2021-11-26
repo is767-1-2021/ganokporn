@@ -1,17 +1,347 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:team_app/pages/hospitel_detail_page.dart';
+import 'package:team_app/pages/hospitel_info_screen.dart';
 import 'package:team_app/pages/hospitel_update_page.dart';
 import 'package:team_app/pages/hostpitel_info_page.dart';
 import 'package:team_app/pages/patient_status_page.dart';
 import 'package:provider/provider.dart';
+
+import 'package:team_app/pages/bottom_nav_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:team_app/models/patient_model.dart';
 import 'package:team_app/models/patient_list_model.dart';
 import 'package:team_app/services/patient_service.dart';
 import 'package:team_app/controllers/patient_controller.dart';
-
 import 'patient_updateform_page.dart';
+
+class PatientList extends StatefulWidget {
+  var service = FirebaseServices();
+  var controller;
+  PatientList() {
+    controller = PatientController(service);
+  }
+
+  @override
+  _PatientListState createState() => _PatientListState();
+}
+
+class _PatientListState extends State<PatientList> {
+  List<Patient> _patientList = List.empty();
+  bool isLoading = false;
+  // String id_hospitel_test = "1234567";
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
+    widget.controller.onSync
+        .listen((bool syncState) => setState(() => isLoading = syncState));
+    _getPatients();
+  }
+
+  void _getPatients() async {
+    var patientsList = await widget.controller.fecthpatients();
+    setState(() {
+      _patientList = patientsList;
+      //context.read<PatientsListModel>().patientList = patientsList;
+    });
+  }
+
+  Widget get body => isLoading
+      ? CircularProgressIndicator()
+      : ListView.builder(
+          itemCount: _patientList.isEmpty ? 1 : _patientList.length,
+          itemBuilder: (context, index) {
+            if (_patientList.isEmpty) {
+              return Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 300),
+                  child: Text('ไม่พบการจองเข้าพักรักษา'),
+                ),
+              );
+            }
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  child: FittedBox(
+                    child: Text(
+                      '${index + 1}',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+                title: Text('${_patientList[index].fullname}'),
+                subtitle: Text('${_patientList[index].startdateadmit}'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PatientDetail(items: _patientList[index]),
+                      ));
+                },
+              ),
+            );
+          });
+
+  @override
+  Widget build(BuildContext context) {
+    /*_getPatients(context);
+    List<PatientsItem> _patientsList = [];
+    if (context.read<PatientsListModel>().patientList != null) {
+      _patientList = context.read<PatientsListModel>().patientList;
+    }*/
+    return Scaffold(
+      appBar: AppBar(
+        //backgroundColor: iBlueColor,
+        title: Text(
+          'รายชื่อผู้จองห้องพัก',
+          //automaticallyImplyLeading: false,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            //color: iWhiteColor
+          ),
+        ),
+        backgroundColor: Color(0xFF473F97),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home_outlined),
+            iconSize: 28.0,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BottomNavScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.add_business),
+            iconSize: 28.0,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HospitelDetailPage()));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            iconSize: 28.0,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HostpitelInfoScreen()),
+              );
+            },
+          )
+        ],
+      ),
+      body: Center(
+        child: body,
+      ),
+    );
+  }
+}
+
+class PatientDetail extends StatelessWidget {
+  final Patient items;
+
+  const PatientDetail({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController _enddateadmitController =
+        new TextEditingController();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            'รายละเอียดการจอง',
+            style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w700,
+              //color: iWhiteColor,
+            ),
+          ),
+        ),
+        backgroundColor: Color(0xFF473F97),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            iconSize: 28.0,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    enabled: false,
+                    labelText: 'ชื่อ-สกุลผู้เข้าพัก',
+                    labelStyle: TextStyle(
+                        // color: iBlackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                    focusedBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+
+                        ),
+                  ),
+                  initialValue: '${items.fullname}',
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    enabled: false,
+                    labelText: 'ชื่อโรงพยาบาลสนาม',
+                    labelStyle: TextStyle(
+                        // color: iBlackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                    focusedBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+
+                        ),
+                  ),
+                  initialValue: '${items.hospitel}',
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    enabled: false,
+                    labelText: 'วันที่ตรวจหาเชื้อ COVID-19',
+                    labelStyle: TextStyle(
+                        // color: iBlackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                    focusedBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+
+                        ),
+                  ),
+                  initialValue: '${items.checkindate}',
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    enabled: false,
+                    labelText: 'วันที่เข้าห้องพัก',
+                    labelStyle: TextStyle(
+                        // color: iBlackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                    focusedBorder: UnderlineInputBorder(
+                        //borderSide: BorderSide(color: iBlueColor),
+
+                        ),
+                  ),
+                  initialValue: '${items.startdateadmit}',
+                ),
+                TextFormField(
+                  controller: _enddateadmitController,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'กรอกวันที่ออกจากห้องพัก',
+                    labelStyle: TextStyle(
+                        //color: iBlackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    hintText: 'DD/MM/YYY',
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'กรุณากรอกวันที่ออกจากห้องพัก';
+                    }
+                    return null;
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 50),
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save();
+                        print('Submit');
+                        var services = FirebaseServices();
+                        var controllers = PatientController(services)
+                            .updateAdmit(items.idcard, '${items.checkindate}',
+                                '${_enddateadmitController.text}');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PatientList()));
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF473F97),
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: Text('อัพเดทข้อมูลเพิ่มเติม',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  ),
+                ),
+                //SizedBox(height: 40),
+                /*ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: ElevatedButton.icon(
+                      label: Text('อัพเดทข้อมูลผู้เข้าพัก'),
+                      icon: Icon(Icons.download_for_offline_outlined),
+                      style: ElevatedButton.styleFrom(
+                        //primary: Color(0xFF26A69A),
+                        fixedSize: Size(300, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PatientUpdateForm(),
+                          ),
+                        );
+                        /*if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+          
+                          context.read<PatientModel>().end_date = enddateadmit;
+                        } */
+                      }),
+                )
+                */
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------- โค้ดก่อนมิดเทอม ----------------------------
 
 /* class PatientListPage extends StatefulWidget {
   @override
@@ -213,261 +543,3 @@ class _PatientSearchState extends State<PatientSearch> {
   }
 }
 */
-
-class PatientList extends StatefulWidget {
-  var service = FirebaseServices();
-  var controller;
-  PatientList() {
-    controller = PatientController(service);
-  }
-
-  @override
-  _PatientListState createState() => _PatientListState();
-}
-
-class _PatientListState extends State<PatientList> {
-  List<Patient> _patientList = List.empty();
-  bool isLoading = false;
-  String id_hospitel_test = "1234567";
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {});
-    widget.controller.onSync
-        .listen((bool syncState) => setState(() => isLoading = syncState));
-    _getPatients();
-  }
-
-  void _getPatients() async {
-    var patientsList = await widget.controller.fecthpatients();
-    setState(() {
-      _patientList = patientsList;
-      //context.read<PatientsListModel>().patientList = patientsList;
-    });
-  }
-
-  Widget get body => isLoading
-      ? CircularProgressIndicator()
-      : ListView.builder(
-          itemCount: _patientList.isEmpty ? 1 : _patientList.length,
-          itemBuilder: (context, index) {
-            if (_patientList.isEmpty) {
-              return Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 300),
-                  child: Text('ไม่พบการจองห้องพัก'),
-                ),
-              );
-            }
-            return Card(
-              child: ListTile(
-                title: Text('${_patientList[index].hospitel}'),
-                subtitle: Text(
-                    ' วันที่ตรวจหาเชื้อ ${_patientList[index].checkindate}'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PatientDetail(items: _patientList[index]),
-                    ),
-                  );
-                },
-              ),
-            );
-          });
-
-  @override
-  Widget build(BuildContext context) {
-    //_getPatients(context);
-    //List<PatientsItem> _patientsList = [];
-    if (context.read<PatientsListModel>().patientList != null) {
-      _patientList = context.read<PatientsListModel>().patientList;
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'รายการจองห้องพัก',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            //color: iWhiteColor
-          ),
-        ),
-        backgroundColor: Color(0xFF473F97),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            iconSize: 28.0,
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Center(
-        child: body,
-      ),
-    );
-  }
-}
-
-class PatientDetail extends StatelessWidget {
-  final Patient items;
-
-  const PatientDetail({
-    Key? key,
-    required this.items,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            'รายละเอียดการจอง',
-            style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w700,
-              //color: iWhiteColor,
-            ),
-          ),
-        ),
-        backgroundColor: Color(0xFF473F97),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            iconSize: 28.0,
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  enabled: false,
-                  labelText: 'ชื่อสกุลผู้เข้าพัก',
-                  labelStyle: TextStyle(
-                      // color: iBlackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16),
-                  focusedBorder: UnderlineInputBorder(
-                      //borderSide: BorderSide(color: iBlueColor),
-
-                      ),
-                ),
-                initialValue: '${items.fullname}',
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  enabled: false,
-                  labelText: 'ชื่อโรงพยาบาลสนาม',
-                  labelStyle: TextStyle(
-                      // color: iBlackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16),
-                  focusedBorder: UnderlineInputBorder(
-                      //borderSide: BorderSide(color: iBlueColor),
-
-                      ),
-                ),
-                initialValue: '${items.hospitel}',
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  enabled: false,
-                  labelText: 'วันที่เข้ารับการตรวจ',
-                  labelStyle: TextStyle(
-                      // color: iBlackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16),
-                  focusedBorder: UnderlineInputBorder(
-                      //borderSide: BorderSide(color: iBlueColor),
-
-                      ),
-                ),
-                initialValue: '${items.checkindate}',
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  enabled: false,
-                  labelText: 'วันที่เข้าห้องพัก',
-                  labelStyle: TextStyle(
-                      // color: iBlackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16),
-                  focusedBorder: UnderlineInputBorder(
-                      //borderSide: BorderSide(color: iBlueColor),
-
-                      ),
-                ),
-                initialValue: '${items.startdateadmit}',
-              ),
-              /* TextFormField(
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Test Enter EndDate',
-                  labelStyle: TextStyle(
-                      //color: iBlackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16),
-                  hintText: 'DD/MM/YYY',
-                  focusedBorder: UnderlineInputBorder(
-                      //borderSide: BorderSide(color: iBlueColor),
-                      ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter EndDate.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  enddateadmit = value;
-                },
-                initialValue: (context.read<PatientModel>().end_date ==
-                                null)
-                                : context.read<PatientModel>().end_date.toString(),
-              ),
-              */
-              SizedBox(height: 40),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: ElevatedButton.icon(
-                    label: Text('อัพเดทข้อมูลผู้เข้าพัก'),
-                    icon: Icon(Icons.download_for_offline_outlined),
-                    style: ElevatedButton.styleFrom(
-                      //primary: Color(0xFF26A69A),
-                      fixedSize: Size(300, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PatientUpdateForm(),
-                        ),
-                      );
-                      /*if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-
-                        context.read<PatientModel>().end_date = enddateadmit;
-                      } */
-                    }),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
