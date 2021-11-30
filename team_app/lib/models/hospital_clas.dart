@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:team_app/models/hospital_model.dart';
-import 'package:team_app/pages/hospitel_info_screen.dart';
-import 'package:provider/provider.dart';
 
 class Hospital {
   int? hospitalId;
@@ -32,9 +29,9 @@ class BHospital {
   int no_patient;
   int no_staff;
   int avaliable_queue;
-  BHospital(this.hospital_number, this.hospital_name, this.address, this.phone,
-      this.no_patient, this.no_staff, this.avaliable_queue);
+  BHospital(this.hospital_number, this.hospital_name,this.address,this.phone,this.no_patient,this.no_staff,this.avaliable_queue);
 
+  
   factory BHospital.fromDs(
     Map<String, Object?> json,
   ) {

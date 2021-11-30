@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:team_app/models/hospital_clas.dart';
+import 'package:icovid/models/hospital_clas.dart';
 
-abstract class AHospitalService {
+abstract class AHospitalService{
   Future<void> addhospitalInfo(BHospital _hospital);
 }
-
 class HospitalServices extends AHospitalService {
-  CollectionReference _ref =
-      FirebaseFirestore.instance.collection('icovid_hospital');
+   CollectionReference _ref = FirebaseFirestore.instance.collection('icovid_hospital');
 
   @override
   Future<void> addhospitalInfo(BHospital items) {
-    return _ref.add({
+   return _ref.add({
       'hospital_number': items.hospital_number,
       'hospital_name': items.hospital_name,
       'address': items.address,
@@ -21,4 +19,5 @@ class HospitalServices extends AHospitalService {
       'avaliable_queue': items.no_patient,
     });
   }
+
 }

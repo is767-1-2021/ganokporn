@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:team_app/models/patient_model.dart';
-import 'package:team_app/pages/patient_list_page.dart';
+import 'package:icovid/models/patient_model.dart';
 
 // Provider
 

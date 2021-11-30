@@ -45,19 +45,19 @@ class HospitalFormModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get avaliableQueue => this._avaliableQueue;
+   get avaliableQueue => this._avaliableQueue;
   set avaliableQueue(value) {
     this._avaliableQueue = value;
     notifyListeners();
   }
 
-  get allQueu => this._allQueue;
+   get allQueu => this._allQueue;
   set allQueu(value) {
     this._allQueue = value;
     notifyListeners();
   }
 
-  get hospitalId => this._hospitalId;
+   get hospitalId => this._hospitalId;
   set hospitalId(value) {
     this._hospitalId = value;
     notifyListeners();

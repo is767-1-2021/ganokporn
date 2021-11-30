@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:team_app/models/hospitel_info_class.dart';
-import 'package:team_app/services/hospitel_info_service.dart';
-import 'package:team_app/pages/hospitel_info_screen.dart';
+import 'package:icovid/models/hospital_clas.dart';
+import 'package:icovid/models/hospitel_info_class.dart';
+import 'package:icovid/services/hospitel_info_service.dart';
 
-//import 'package:team_app/models/patient_model.dart';
-//import 'package:team_app/services/patient_service.dart';
-
-class HospitelInfoController {
+class HospitelInfoController{
   final HospitelInfoServices services;
 
   // StreamController<bool> onSyncAddHosController = StreamController<bool>.broadcast();

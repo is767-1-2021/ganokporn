@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:team_app/models/hospital_clas.dart';
-import 'package:team_app/pages/hospitel_info_screen.dart';
-import 'package:provider/provider.dart';
-import 'hospital_clas.dart';
 
-//import 'package:team_app/models/patient_model.dart';
-//import 'package:team_app/pages/hospitel_info_screen.dart';
-//import 'package:team_app/pages/patient_list_page.dart';
-//import 'package:team_app/services/hospital_service.dart';
+import 'hospital_clas.dart';
 
 class HospitalFormModel extends ChangeNotifier {
   String? _hospitalName;
@@ -54,19 +47,19 @@ class HospitalFormModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get avaliableQueue => this._avaliableQueue;
+   get avaliableQueue => this._avaliableQueue;
   set avaliableQueue(value) {
     this._avaliableQueue = value;
     notifyListeners();
   }
 
-  get allQueu => this._allQueue;
+   get allQueu => this._allQueue;
   set allQueu(value) {
     this._allQueue = value;
     notifyListeners();
   }
 
-  get hospitalId => this._hospitalId;
+   get hospitalId => this._hospitalId;
   set hospitalId(value) {
     this._hospitalId = value;
     notifyListeners();

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "602567411880",
+    "project_id": "is767-2021-ganokporn",
+    "storage_bucket": "is767-2021-ganokporn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602567411880:android:1419399deaa052f534da9d",
+        "android_client_info": {
+          "package_name": "com.example.final_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602567411880-4ov9o4d3jommvmt5ptl6v1nmc63iagvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEJuLvP2bciQP92yHBbDp6H3IY8h_4cFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602567411880-4ov9o4d3jommvmt5ptl6v1nmc63iagvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
